@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-export default class PlayerInput extends Component {
+export default class Input extends Component {
   static propTypes = {
     onSubmit: PropTypes.func,
   }
@@ -40,7 +40,6 @@ export default class PlayerInput extends Component {
           value={this.state.inputValue}
           type="text"
           autoFocus
-          placeholder="Player name"
         />
       </div>
     )
