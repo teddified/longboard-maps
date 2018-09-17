@@ -1,12 +1,11 @@
 import { connect } from 'react-redux'
 import LoginScreen from '../components/LoginScreen'
-import {} from '../actions'
+import { addMarker } from '../actions'
 
-const mapStateToProps = state => ({
-  // players: state.players,
-})
+const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
+  addMarker: coords => dispatch(addMarker({ coords })),
   // deletePlayer: index => dispatch(deletePlayer({ index })),
 })
 

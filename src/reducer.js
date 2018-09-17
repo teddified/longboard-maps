@@ -2,32 +2,30 @@ import { load } from './services'
 import ACTIONS from './actions'
 
 const initialState = {
-  // players: load('players') || [],
+  markerStart: { lat: 53.572536, lng: 9.983114 },
+  markerEnd: { lat: 53.573269, lng: 9.999397 },
+  StartBool: true,
 }
 
 export default function(state = initialState, action = {}) {
   switch (action.type) {
-    // case ACTIONS.DELETE_ALL_PLAYERS:
-    //   return {
-    //     ...state,
-    //     players: [],
-    //   }
-    // case ACTIONS.DELETE_PLAYER:
-    //   return {
-    //     ...state,
-    //     players: [
-    //       ...state.players.slice(0, action.payload.index),
-    //       ...state.players.slice(action.payload.index + 1),
-    //     ],
-    //   }
-    // case ACTIONS.ADD_PLAYER:
-    //   return {
-    //     ...state,
-    //     players: [
-    //       ...state.players,
-    //       { name: action.payload.name, roundscore: 0, score: [] },
-    //     ],
-    //   }
+    case ACTIONS.CHANGE_POSITION:
+      const func = action.payload[2]
+      let markerLat = func.latLng.lat()
+      let markerLng = func.latLng.lng()
+      if (state.StartBool) {
+        return {
+          ...state,
+          markerStart: { lat: markerLat, lng: markerLng },
+          StartBool: false,
+        }
+      } else {
+        return {
+          ...state,
+          markerEnd: { lat: markerLat, lng: markerLng },
+          StartBool: true,
+        }
+      }
     default:
       return state
   }
