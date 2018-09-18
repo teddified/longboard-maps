@@ -2,40 +2,100 @@ import reducer from './reducer'
 import ACTIONS from './actions'
 
 describe('reducer', () => {
-  describe(ACTIONS.ADD_PLAYER, () => {
-    it('creates a player with a name', () => {
+  describe(ACTIONS.CHANGE_POSITION, () => {
+    it('Change latitude and langitute of start markers', () => {
       const state = {
-        players: [],
+        waypoints: [
+          { lat: 51.5074, lng: -0.1278 },
+          { lat: 51.5074, lng: -0.1278 },
+        ],
+        StartBool: true,
       }
-      const action = { type: ACTIONS.ADD_PLAYER, payload: { name: 'Foobar' } }
+      const action = {
+        type: ACTIONS.CHANGE_POSITION,
+        payload: {
+          latLng: {
+            lat: () => 53.4084,
+            lng: () => -2.9916,
+          },
+        },
+      }
 
       expect(reducer(state, action)).toEqual({
-        players: [{ name: 'Foobar', roundscore: 0, score: [] }],
+        ...state,
+        waypoints: [
+          { lat: 53.4084, lng: -2.9916 },
+          { lat: 51.5074, lng: -0.1278 },
+        ],
+        StartBool: false,
+      })
+    })
+
+    it('Change latitude and langitute of end markers', () => {
+      const state = {
+        waypoints: [
+          { lat: 51.5074, lng: -0.1278 },
+          { lat: 51.5074, lng: -0.1278 },
+        ],
+        StartBool: false,
+      }
+      const action = {
+        type: ACTIONS.CHANGE_POSITION,
+        payload: {
+          latLng: {
+            lat: () => 53.4084,
+            lng: () => -2.9916,
+          },
+        },
+      }
+
+      expect(reducer(state, action)).toEqual({
+        waypoints: [
+          { lat: 51.5074, lng: -0.1278 },
+          { lat: 53.4084, lng: -2.9916 },
+        ],
+        StartBool: true,
+      })
+    })
+
+    it('add a waypoint', () => {
+      const state = {
+        addWaypoints: true,
+        waypoints: [
+          { lat: 51.5074, lng: -0.1278 },
+          { lat: 51.5074, lng: -0.1278 },
+        ],
+      }
+      const action = {
+        type: ACTIONS.CHANGE_POSITION,
+        payload: {
+          latLng: {
+            lat: () => 53.4084,
+            lng: () => -2.9916,
+          },
+        },
+      }
+
+      expect(reducer(state, action)).toEqual({
+        addWaypoints: true,
+        waypoints: [
+          ...state.waypoints.slice(0, state.waypoints.length - 1),
+          { lat: 53.4084, lng: -2.9916 },
+          ...state.waypoints.slice(state.waypoints.length - 1),
+        ],
       })
     })
   })
 
-  describe(ACTIONS.DELETE_ALL_PLAYERS, () => {
-    it('makes the players an empty array', () => {
+  describe(ACTIONS.CHANGE_MODE, () => {
+    it('change mode to adding waypoints', () => {
       const state = {
-        players: [{ foo: 'bar' }, { baz: 'foobar' }],
+        addWaypoints: false,
       }
-
-      const action = { type: ACTIONS.DELETE_ALL_PLAYERS }
-
-      expect(reducer(state, action)).toEqual({ players: [] })
-    })
-  })
-  describe(ACTIONS.DELETE_PLAYER, () => {
-    it('delete one entry in players', () => {
-      const state = {
-        players: [{ name: 'tom', score: [], roundscore: 10 }],
-      }
-
-      const action = { type: ACTIONS.DELETE_PLAYER, payload: { index: 0 } }
+      const action = { type: ACTIONS.CHANGE_MODE }
 
       expect(reducer(state, action)).toEqual({
-        players: [],
+        addWaypoints: true,
       })
     })
   })
