@@ -4,10 +4,18 @@ import { aKey } from '../aKey'
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
+  z-index: 1;
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 10vh;
+  bottom: 10px;
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  border-style: none;
+  border-radius: 20px;
 `
 
 const PopUp = styled.div`
@@ -27,7 +35,6 @@ const PopUp = styled.div`
   align-items: center;
   border-radius: 20px;
   font-size: 20px;
-  font-family: 'Source Sans Pro';
 `
 
 export class MapScreen extends Component {
@@ -42,8 +49,11 @@ export class MapScreen extends Component {
     return (
       <React.Fragment>
         <PopUp>{state.hint}</PopUp>
+        <StyledButton onClick={() => changeMode()}>
+          {state.addWaypoints ? 'end' : 'add waypoints'}
+        </StyledButton>
         <Map
-          style={{ height: '90vh' }}
+          // style={{ height: '90vh' }}
           google={this.props.google}
           onClick={(mapProps, map, event) => changePosition(event)}
           initialCenter={{
@@ -97,11 +107,11 @@ export class MapScreen extends Component {
                       lat: waypoint.lat,
                       lng: waypoint.lng,
                     }}
+                    draggable={true}
                   />
                 )
               })}
         </Map>
-        <StyledButton onClick={() => changeMode()}>Add Waypoints</StyledButton>
       </React.Fragment>
     )
   }

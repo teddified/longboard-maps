@@ -22,7 +22,7 @@ describe('reducer', () => {
       }
 
       expect(reducer(state, action)).toEqual({
-        ...state,
+        hint: 'Place your Goal',
         waypoints: [
           { lat: 53.4084, lng: -2.9916 },
           { lat: 51.5074, lng: -0.1278 },
@@ -50,6 +50,7 @@ describe('reducer', () => {
       }
 
       expect(reducer(state, action)).toEqual({
+        hint: 'Place your Starting Point',
         waypoints: [
           { lat: 51.5074, lng: -0.1278 },
           { lat: 53.4084, lng: -2.9916 },
@@ -77,7 +78,7 @@ describe('reducer', () => {
       }
 
       expect(reducer(state, action)).toEqual({
-        addWaypoints: true,
+        ...state,
         waypoints: [
           ...state.waypoints.slice(0, state.waypoints.length - 1),
           { lat: 53.4084, lng: -2.9916 },
@@ -95,6 +96,7 @@ describe('reducer', () => {
       const action = { type: ACTIONS.CHANGE_MODE }
 
       expect(reducer(state, action)).toEqual({
+        hint: 'Add Waypoints',
         addWaypoints: true,
       })
     })

@@ -35,6 +35,7 @@ export default function(state = initialState, action = {}) {
               ...state.waypoints.slice(1),
             ],
             StartBool: false,
+            hint: 'Place your Goal',
           }
         } else {
           return {
@@ -44,13 +45,29 @@ export default function(state = initialState, action = {}) {
               { lat: markerLat, lng: markerLng },
             ],
             StartBool: true,
+            hint: 'Place your Starting Point',
           }
         }
       }
     case ACTIONS.CHANGE_MODE:
-      return {
-        ...state,
-        addWaypoints: !state.addWaypoints,
+      if (state.addWaypoints && state.StartBool) {
+        return {
+          ...state,
+          addWaypoints: !state.addWaypoints,
+          hint: 'Place your Starting Point',
+        }
+      } else if (state.addWaypoints && !state.StartBool) {
+        return {
+          ...state,
+          addWaypoints: !state.addWaypoints,
+          hint: 'Place your Goal',
+        }
+      } else {
+        return {
+          ...state,
+          addWaypoints: !state.addWaypoints,
+          hint: 'Add Waypoints',
+        }
       }
 
     default:
