@@ -2,10 +2,7 @@
 import ACTIONS from './actions'
 
 const initialState = {
-  waypoints: [
-    { lat: 53.572536, lng: 9.983114 },
-    { lat: 53.573269, lng: 9.999397 },
-  ],
+  waypoints: [],
   StartBool: true,
   addWaypoints: false,
   hint: 'Place your Starting Point',
@@ -38,14 +35,26 @@ export default function(state = initialState, action = {}) {
             hint: 'Place your Goal',
           }
         } else {
-          return {
-            ...state,
-            waypoints: [
-              ...state.waypoints.slice(0, state.waypoints.length - 1),
-              { lat: markerLat, lng: markerLng },
-            ],
-            StartBool: true,
-            hint: 'Place your Starting Point',
+          if (state.waypoints.length < 2) {
+            return {
+              ...state,
+              waypoints: [
+                ...state.waypoints.slice(0, state.waypoints.length),
+                { lat: markerLat, lng: markerLng },
+              ],
+              StartBool: true,
+              hint: 'Place your Starting Point',
+            }
+          } else {
+            return {
+              ...state,
+              waypoints: [
+                ...state.waypoints.slice(0, state.waypoints.length - 1),
+                { lat: markerLat, lng: markerLng },
+              ],
+              StartBool: true,
+              hint: 'Place your Starting Point',
+            }
           }
         }
       }

@@ -16,6 +16,12 @@ const StyledButton = styled.button`
   right: 0;
   border-style: none;
   border-radius: 20px;
+  transition: all 0.4s ease-in;
+  outline: none;
+  &:active {
+    background: #1ea362;
+    border: 1px solid #ddd;
+  }
 `
 
 const PopUp = styled.div`
@@ -38,9 +44,51 @@ const PopUp = styled.div`
 `
 
 export class MapScreen extends Component {
+  checkStart() {
+    const { state } = this.props
+    if (state.waypoints[0]) {
+      return {
+        lat: state.waypoints[0].lat,
+        lng: state.waypoints[0].lng,
+      }
+    } else {
+      return {}
+    }
+  }
+
+  checkEnd() {
+    const { state } = this.props
+    if (state.waypoints[state.waypoints.length - 1]) {
+      return {
+        lat: state.waypoints[state.waypoints.length - 1].lat,
+        lng: state.waypoints[state.waypoints.length - 1].lng,
+      }
+    } else {
+      return {}
+    }
+  }
+
+  checkStartEnd() {
+    const { changeMode, state } = this.props
+    if (state.waypoints[0] && state.waypoints[state.waypoints.length - 1]) {
+      changeMode()
+    } else {
+      console.log('nope')
+    }
+  }
+
+  toogleClassName = () => {
+    const { state } = this.props
+    if (state.waypoints.length > 2) {
+      return 'visible'
+    } else {
+      return 'hidden'
+    }
+  }
+
   render() {
     const google = window.google
-    const { changePosition, changeMode, state } = this.props
+    const { changePosition, state } = this.props
     let wayPointCheck = false
     if (state.waypoints.length > 2) {
       wayPointCheck = true
@@ -49,26 +97,27 @@ export class MapScreen extends Component {
     return (
       <React.Fragment>
         <PopUp>{state.hint}</PopUp>
-        <StyledButton onClick={() => changeMode()}>
+        <StyledButton
+          onClick={() => this.checkStartEnd()}
+          style={{
+            bottom: state.waypoints.length < 2 ? '-40px' : '10px',
+          }}
+        >
           {state.addWaypoints ? 'end' : 'add waypoints'}
         </StyledButton>
         <Map
-          // style={{ height: '90vh' }}
           google={this.props.google}
           onClick={(mapProps, map, event) => changePosition(event)}
           initialCenter={{
-            lat: state.waypoints[0].lat,
-            lng: state.waypoints[0].lng,
+            lat: 53.57255,
+            lng: 9.98292,
           }}
           zoom={14}
         >
           <Marker
             data-test-id="Start Marker"
             onClick={this.onMarkerClick}
-            position={{
-              lat: state.waypoints[0].lat,
-              lng: state.waypoints[0].lng,
-            }}
+            position={this.checkStart()}
             name={'Start'}
             Title={'Start'}
             draggable={true}
@@ -76,10 +125,7 @@ export class MapScreen extends Component {
           <Marker
             data-test-id="End Marker"
             onClick={this.onMarkerClick}
-            position={{
-              lat: state.waypoints[state.waypoints.length - 1].lat,
-              lng: state.waypoints[state.waypoints.length - 1].lng,
-            }}
+            position={this.checkEnd()}
             name={'Finish'}
             Title={'Finish'}
             draggable={true}
