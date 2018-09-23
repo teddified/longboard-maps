@@ -3,10 +3,38 @@ import { Map, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react'
 import { aKey } from '../aKey'
 import styled from 'styled-components'
 
+const { compose, withProps, lifecycle } = require('recompose')
+const {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  DirectionsRenderer,
+} = require('react-google-maps')
+
 const StyledButton = styled.button`
   z-index: 1;
   position: absolute;
   bottom: 10px;
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  border-style: none;
+  border-radius: 20px;
+  transition: all 0.4s ease-in;
+  outline: none;
+  &:active {
+    background: #1ea362;
+    border: 1px solid #ddd;
+  }
+`
+const StyledButton2 = styled.button`
+  z-index: 1;
+  position: absolute;
+  bottom: 50px;
   width: 200px;
   height: 40px;
   font-size: 20px;
@@ -44,6 +72,26 @@ const PopUp = styled.div`
 `
 
 export class MapScreen extends Component {
+  setDirections() {
+    const { updateDirections } = this.props
+    const google = window.google
+    const DirectionsService = new google.maps.DirectionsService()
+    DirectionsService.route(
+      {
+        origin: new google.maps.LatLng(53.5726, 9.984783),
+        destination: new google.maps.LatLng(53.561068, 9.913787),
+        travelMode: google.maps.TravelMode.DRIVING,
+      },
+      (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          updateDirections(result)
+        } else {
+          console.error(`error fetching directions ${result}`)
+        }
+      }
+    )
+  }
+
   checkStart() {
     const { state } = this.props
     if (state.waypoints[0]) {
@@ -105,6 +153,7 @@ export class MapScreen extends Component {
         >
           {state.addWaypoints ? 'end' : 'add waypoints'}
         </StyledButton>
+
         <Map
           google={this.props.google}
           onClick={(mapProps, map, event) => changePosition(event)}
@@ -157,6 +206,13 @@ export class MapScreen extends Component {
                   />
                 )
               })}
+          <StyledButton2 onClick={() => this.setDirections()}>
+            test
+          </StyledButton2>
+          {state.directions &&
+            console.log(state.directions) && (
+              <DirectionsRenderer directions={state.directions} />
+            )}
         </Map>
       </React.Fragment>
     )
@@ -164,6 +220,5 @@ export class MapScreen extends Component {
 }
 
 export default GoogleApiWrapper({
-  // apiKey: 'AIzaSyBJs-n4MF2WGvD6q1PfEoDJw6UQKTpAhBU',
   apiKey: aKey,
 })(MapScreen)

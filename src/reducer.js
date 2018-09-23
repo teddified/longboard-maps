@@ -6,6 +6,7 @@ const initialState = {
   StartBool: true,
   addWaypoints: false,
   hint: 'Place your Starting Point',
+  directions: null,
 }
 
 export default function(state = initialState, action = {}) {
@@ -77,6 +78,12 @@ export default function(state = initialState, action = {}) {
           addWaypoints: !state.addWaypoints,
           hint: 'Add Waypoints',
         }
+      }
+
+    case ACTIONS.UPDATE_DIRECTIONS:
+      return {
+        ...state,
+        directions: action.payload,
       }
 
     default:
