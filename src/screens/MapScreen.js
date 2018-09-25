@@ -223,10 +223,12 @@ export default class MapScreen extends Component {
         options={{
           disableDefaultUI: true,
         }}
+        data-test-id="googlemap"
       >
         <PopUp>{state.hint}</PopUp>
 
         <StyledButton
+          data-test-id="addwaypoints"
           onClick={() => this.checkStartEnd()}
           style={{
             bottom: state.waypoints.length < 2 ? '-40px' : '10px',
@@ -234,14 +236,17 @@ export default class MapScreen extends Component {
         >
           {state.addWaypoints ? 'end' : 'add waypoints'}
         </StyledButton>
-        <Link to="/">
-          <StyledSaveButton onClick={this.props.saveTrip}>
+        <Link to="/saveTrip">
+          <StyledSaveButton
+            onClick={this.props.saveTrip}
+            data-test-id="savetrip"
+          >
             Save Trip
           </StyledSaveButton>
         </Link>
         {props.directions && (
           <React.Fragment>
-            <StyledDistance>
+            <StyledDistance data-test-id="distancelabel">
               <span>Distance: </span>
               {this.checkDistance(props.directions)}
             </StyledDistance>

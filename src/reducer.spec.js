@@ -101,4 +101,28 @@ describe('reducer', () => {
       })
     })
   })
+
+  describe(ACTIONS.SAVE_TRIP, () => {
+    it('clear waypoints and add to trip', () => {
+      const state = {
+        waypoints: [
+          { lat: 0, lng: 10 },
+          { lat: 0, lng: 20 },
+          { lat: 0, lng: 30 },
+        ],
+        trips: [
+          [{ lat: 10, lng: 10 }, { lat: 20, lng: 10 }, { lat: 30, lng: 10 }],
+        ],
+      }
+      const action = { type: ACTIONS.SAVE_TRIP }
+
+      expect(reducer(state, action)).toEqual({
+        waypoints: [],
+        trips: [
+          [{ lat: 10, lng: 10 }, { lat: 20, lng: 10 }, { lat: 30, lng: 10 }],
+          [{ lat: 0, lng: 10 }, { lat: 0, lng: 20 }, { lat: 0, lng: 30 }],
+        ],
+      })
+    })
+  })
 })
