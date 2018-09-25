@@ -2,11 +2,13 @@
 import ACTIONS from './actions'
 
 const initialState = {
+  trips: [],
   waypoints: [],
   StartBool: true,
   addWaypoints: false,
   hint: 'Place your Starting Point',
   directions: null,
+  distance: null,
 }
 
 export default function(state = initialState, action = {}) {
@@ -23,6 +25,7 @@ export default function(state = initialState, action = {}) {
             { lat: markerLat, lng: markerLng },
             ...state.waypoints.slice(state.waypoints.length - 1),
           ],
+          // distance: action.payload.routes[0].legs[0].distance.text,
         }
       } else {
         if (state.StartBool) {
@@ -80,10 +83,11 @@ export default function(state = initialState, action = {}) {
         }
       }
 
-    case ACTIONS.UPDATE_DIRECTIONS:
+    case ACTIONS.SAVE_TRIP:
       return {
         ...state,
-        directions: action.payload,
+        trips: [...state.trips, state.waypoints],
+        waypoints: [],
       }
 
     default:

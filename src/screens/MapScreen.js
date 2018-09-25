@@ -1,15 +1,7 @@
 import React, { Component } from 'react'
-import { Map, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react'
 import { aKey } from '../aKey'
 import styled from 'styled-components'
-
-const { compose, withProps, lifecycle } = require('recompose')
-const {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  DirectionsRenderer,
-} = require('react-google-maps')
+import { Link } from 'react-router-dom'
 
 const StyledButton = styled.button`
   z-index: 1;
@@ -31,17 +23,14 @@ const StyledButton = styled.button`
     border: 1px solid #ddd;
   }
 `
-const StyledButton2 = styled.button`
+const StyledSaveButton = styled.button`
   z-index: 1;
   position: absolute;
-  bottom: 50px;
+  bottom: 10px;
   width: 200px;
   height: 40px;
   font-size: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
+  left: 10px;
   border-style: none;
   border-radius: 20px;
   transition: all 0.4s ease-in;
@@ -63,7 +52,7 @@ const PopUp = styled.div`
   margin-right: auto;
   left: 0;
   right: 0;
-  top: 20px;
+  top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,50 +60,60 @@ const PopUp = styled.div`
   font-size: 20px;
 `
 
-export class MapScreen extends Component {
-  setDirections() {
-    const { updateDirections } = this.props
-    const google = window.google
-    const DirectionsService = new google.maps.DirectionsService()
-    DirectionsService.route(
-      {
-        origin: new google.maps.LatLng(53.5726, 9.984783),
-        destination: new google.maps.LatLng(53.561068, 9.913787),
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          updateDirections(result)
-        } else {
-          console.error(`error fetching directions ${result}`)
-        }
-      }
-    )
-  }
+const StyledDistance = styled.div`
+  height: 20px;
+  width: 140px;
+  border-radius: 20px;
+  background: aliceblue;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
 
-  checkStart() {
-    const { state } = this.props
-    if (state.waypoints[0]) {
-      return {
-        lat: state.waypoints[0].lat,
-        lng: state.waypoints[0].lng,
-      }
-    } else {
-      return {}
-    }
+  @media screen and (max-width: 650px) {
+    top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
   }
+`
 
-  checkEnd() {
-    const { state } = this.props
-    if (state.waypoints[state.waypoints.length - 1]) {
-      return {
-        lat: state.waypoints[state.waypoints.length - 1].lat,
-        lng: state.waypoints[state.waypoints.length - 1].lng,
-      }
-    } else {
-      return {}
-    }
-  }
+const { compose, withProps, lifecycle } = require('recompose')
+const {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  DirectionsRenderer,
+} = require('react-google-maps')
+
+export default class MapScreen extends Component {
+  // checkStart() {
+  //   const { state } = this.props
+  //   if (state.waypoints[0]) {
+  //     return {
+  //       lat: state.waypoints[0].lat,
+  //       lng: state.waypoints[0].lng,
+  //     }
+  //   } else {
+  //     return {}
+  //   }
+  // }
+
+  // checkEnd() {
+  //   const { state } = this.props
+  //   if (state.waypoints[state.waypoints.length - 1]) {
+  //     return {
+  //       lat: state.waypoints[state.waypoints.length - 1].lat,
+  //       lng: state.waypoints[state.waypoints.length - 1].lng,
+  //     }
+  //   } else {
+  //     return {}
+  //   }
+  // }
 
   checkStartEnd() {
     const { changeMode, state } = this.props
@@ -125,26 +124,108 @@ export class MapScreen extends Component {
     }
   }
 
-  toogleClassName = () => {
+  checkDistance(directions) {
     const { state } = this.props
     if (state.waypoints.length > 2) {
-      return 'visible'
+      let distance = directions.routes[0].legs.reduce((acc, curr) => {
+        return acc + curr.distance.value
+      }, 0)
+      return distance / 1000 + ' Km'
     } else {
-      return 'hidden'
+      return directions.routes[0].legs[0].distance.text
     }
   }
 
-  render() {
-    const google = window.google
-    const { changePosition, state } = this.props
+  getMap() {
+    const { changePosition, saveTrip, state } = this.props
     let wayPointCheck = false
     if (state.waypoints.length > 2) {
       wayPointCheck = true
     }
 
-    return (
-      <React.Fragment>
+    const MapWithADirectionsRenderer = compose(
+      withProps({
+        googleMapURL:
+          'https://maps.googleapis.com/maps/api/js?key=' +
+          aKey +
+          '&v=3.exp&libraries=geometry,drawing,places',
+        loadingElement: <div style={{ height: '100%' }} />,
+        containerElement: <div style={{ height: '100vh' }} />,
+        mapElement: <div style={{ height: '100%' }} />,
+        state: state,
+        changePosition: changePosition,
+        saveTrip: saveTrip,
+      }),
+      withScriptjs,
+      withGoogleMap,
+      lifecycle({
+        componentDidMount() {
+          const google = window.google
+          const DirectionsService = new google.maps.DirectionsService()
+          const waypoints = this.props.state.waypoints
+
+          if (waypoints.length > 1) {
+            DirectionsService.route(
+              {
+                origin: new google.maps.LatLng(
+                  waypoints[0].lat,
+                  waypoints[0].lng
+                ),
+                destination: new google.maps.LatLng(
+                  waypoints[waypoints.length - 1].lat,
+                  waypoints[waypoints.length - 1].lng
+                ),
+                travelMode: google.maps.TravelMode.WALKING,
+                waypoints: waypoints
+                  .slice(1, state.waypoints.length - 1)
+                  .map(waypoint => ({
+                    location: new google.maps.LatLng(
+                      waypoint.lat,
+                      waypoint.lng
+                    ),
+                  })),
+              },
+              (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                  this.setState({
+                    directions: result,
+                  })
+                } else {
+                  console.error(`error fetching directions ${result}`)
+                }
+              }
+            )
+          }
+          if (waypoints.length < 2) {
+            DirectionsService.route(
+              {
+                origin: new google.maps.LatLng(53.572548, 9.983029),
+                destination: new google.maps.LatLng(53.561082, 10),
+                travelMode: google.maps.TravelMode.WALKING,
+              },
+              (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                  this.setState({
+                    directions: result,
+                  })
+                } else {
+                  console.error(`error fetching directions ${result}`)
+                }
+              }
+            )
+          }
+        },
+      })
+    )(props => (
+      <GoogleMap
+        defaultZoom={14}
+        onClick={e => this.props.changePosition(e)}
+        options={{
+          disableDefaultUI: true,
+        }}
+      >
         <PopUp>{state.hint}</PopUp>
+
         <StyledButton
           onClick={() => this.checkStartEnd()}
           style={{
@@ -153,72 +234,27 @@ export class MapScreen extends Component {
         >
           {state.addWaypoints ? 'end' : 'add waypoints'}
         </StyledButton>
+        <Link to="/">
+          <StyledSaveButton onClick={this.props.saveTrip}>
+            Save Trip
+          </StyledSaveButton>
+        </Link>
+        {props.directions && (
+          <React.Fragment>
+            <StyledDistance>
+              <span>Distance: </span>
+              {this.checkDistance(props.directions)}
+            </StyledDistance>
+            <DirectionsRenderer directions={props.directions} />
+          </React.Fragment>
+        )}
+      </GoogleMap>
+    ))
+    return MapWithADirectionsRenderer
+  }
 
-        <Map
-          google={this.props.google}
-          onClick={(mapProps, map, event) => changePosition(event)}
-          initialCenter={{
-            lat: 53.57255,
-            lng: 9.98292,
-          }}
-          zoom={14}
-        >
-          <Marker
-            data-test-id="Start Marker"
-            onClick={this.onMarkerClick}
-            position={this.checkStart()}
-            name={'Start'}
-            Title={'Start'}
-            draggable={true}
-          />
-          <Marker
-            data-test-id="End Marker"
-            onClick={this.onMarkerClick}
-            position={this.checkEnd()}
-            name={'Finish'}
-            Title={'Finish'}
-            draggable={true}
-            icon={{
-              url:
-                'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-              anchor: new google.maps.Point(0, 32),
-              scaledSize: new google.maps.Size(32, 32),
-            }}
-          />
-          <Polyline
-            path={state.waypoints}
-            strokeColor="#0000FF"
-            strokeOpacity={0.8}
-            strokeWeight={2}
-          />
-          {wayPointCheck &&
-            state.waypoints
-              .slice(1, state.waypoints.length - 1)
-              .map((waypoint, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    position={{
-                      lat: waypoint.lat,
-                      lng: waypoint.lng,
-                    }}
-                    draggable={true}
-                  />
-                )
-              })}
-          <StyledButton2 onClick={() => this.setDirections()}>
-            test
-          </StyledButton2>
-          {state.directions &&
-            console.log(state.directions) && (
-              <DirectionsRenderer directions={state.directions} />
-            )}
-        </Map>
-      </React.Fragment>
-    )
+  render() {
+    const MapWithADirectionsRenderer = this.getMap()
+    return <MapWithADirectionsRenderer />
   }
 }
-
-export default GoogleApiWrapper({
-  apiKey: aKey,
-})(MapScreen)

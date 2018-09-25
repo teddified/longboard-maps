@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 const StyledCard = styled.div`
   width: 95%;
-  height: 50px;
+  height: 100px;
+  min-height: 100px;
   border: 1px solid #ddd;
   border-radius: 3px;
   margin-bottom: 10px;
@@ -26,7 +27,17 @@ const StyledCard = styled.div`
 
 export default class TripCard extends Component {
   state = {
-    tripNames: ['Alstertrip', 'Messehallen'],
+    tripNames: [
+      'Alstertrip',
+      'Messehallen',
+      'Messehallen',
+      'Messehallen',
+      'Messehallen',
+      'Messehallen',
+      'Messehallen',
+      'Messehallen',
+      'Messehallen',
+    ],
   }
   render() {
     return (
@@ -36,7 +47,7 @@ export default class TripCard extends Component {
             <StyledCard key={index}>
               <triptitle>{name}</triptitle>
               <imagesection>
-                <img src="https://source.unsplash.com/random/50x50" />
+                <img src="https://source.unsplash.com/random/100x100" />
               </imagesection>
             </StyledCard>
           )

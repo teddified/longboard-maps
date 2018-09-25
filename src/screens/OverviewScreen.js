@@ -16,6 +16,19 @@ const StyledApp = styled.div`
   overflow: hidden;
 `
 
+const StyledHeader = styled.div`
+  background: #4a90e2;
+  width: 100%;
+  height: 10%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+  color: #274d7a;
+  border-bottom: 3px solid #273d7a;
+`
+
 const StyledButton = styled.button`
   width: 300px;
   height: 10%;
@@ -26,25 +39,29 @@ const StyledButton = styled.button`
   border-bottom: 3px solid #274d7a;
 `
 
+const StyledBox = styled.div`
+  height: 80%;
+  overflow: hidden;
+  position: relative;
+`
+
 const StyledTripCardSection = styled.div`
-  height: 90%;
+  height: 100%;
   width: 320px;
   display: flex;
   align-items: center;
   flex-direction: column;
-`
+  overflow-y: scroll;
 
-const StyledHeader = styled.div`
-  background: #4a90e2;
-  width: 100%;
-  height: 100px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 38px;
-  color: #274d7a;
-  border-bottom: 3px solid #273d7a;
+  &::after {
+    content: '';
+    background: linear-gradient(transparent, white 80%);
+    position: absolute;
+    height: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 `
 
 export default class OverviewScreen extends Component {
@@ -53,9 +70,11 @@ export default class OverviewScreen extends Component {
       <React.Fragment>
         <StyledApp>
           <StyledHeader>Your Trips</StyledHeader>
-          <StyledTripCardSection>
-            <TripCard />
-          </StyledTripCardSection>
+          <StyledBox>
+            <StyledTripCardSection>
+              <TripCard />
+            </StyledTripCardSection>
+          </StyledBox>
           <Link to="/addRoute">
             <StyledButton>+</StyledButton>
           </Link>
