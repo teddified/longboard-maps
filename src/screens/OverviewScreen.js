@@ -69,14 +69,14 @@ export default class OverviewScreen extends Component {
     return (
       <React.Fragment>
         <StyledApp>
-          <StyledHeader>Your Trips</StyledHeader>
+          <StyledHeader data-test-id="TripHeader">Your Trips</StyledHeader>
           <StyledBox>
-            <StyledTripCardSection>
+            <StyledTripCardSection data-test-id="TripCardSection">
               <TripCard />
             </StyledTripCardSection>
           </StyledBox>
           <Link to="/addRoute">
-            <StyledButton>+</StyledButton>
+            <StyledButton data-test-id="AddButton">+</StyledButton>
           </Link>
         </StyledApp>
       </React.Fragment>

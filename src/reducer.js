@@ -25,7 +25,6 @@ export default function(state = initialState, action = {}) {
             { lat: markerLat, lng: markerLng },
             ...state.waypoints.slice(state.waypoints.length - 1),
           ],
-          // distance: action.payload.routes[0].legs[0].distance.text,
         }
       } else {
         if (state.StartBool) {

@@ -44,10 +44,10 @@ export default class TripCard extends Component {
       <React.Fragment>
         {this.state.tripNames.map((name, index) => {
           return (
-            <StyledCard key={index}>
+            <StyledCard key={index} data-test-id="TripCard">
               <triptitle>{name}</triptitle>
               <imagesection>
-                <img src="https://source.unsplash.com/random/100x100" />
+                <img src="https://source.unsplash.com/random/100x100" alt="" />
               </imagesection>
             </StyledCard>
           )

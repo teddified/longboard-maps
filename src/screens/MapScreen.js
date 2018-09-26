@@ -126,6 +126,7 @@ export default class MapScreen extends Component {
 
   checkDistance(directions) {
     const { state } = this.props
+    console.log(directions)
     if (state.waypoints.length > 2) {
       let distance = directions.routes[0].legs.reduce((acc, curr) => {
         return acc + curr.distance.value
@@ -138,10 +139,6 @@ export default class MapScreen extends Component {
 
   getMap() {
     const { changePosition, saveTrip, state } = this.props
-    let wayPointCheck = false
-    if (state.waypoints.length > 2) {
-      wayPointCheck = true
-    }
 
     const MapWithADirectionsRenderer = compose(
       withProps({
@@ -250,7 +247,10 @@ export default class MapScreen extends Component {
               <span>Distance: </span>
               {this.checkDistance(props.directions)}
             </StyledDistance>
-            <DirectionsRenderer directions={props.directions} />
+            <DirectionsRenderer
+              directions={props.directions}
+              suppressMarkers="true"
+            />
           </React.Fragment>
         )}
       </GoogleMap>

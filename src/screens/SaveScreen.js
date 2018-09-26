@@ -49,14 +49,13 @@ export default class SaveScreen extends Component {
   render() {
     return (
       <StyledApp>
-        <StyledHeader>Save Trip</StyledHeader>
+        <StyledHeader data-test-id="SaveHeader">Save Trip</StyledHeader>
         <StyledBox>
-          <label>Trip Name:</label>
-          <Input />
+          <Input placeholder="Trip Name" />
         </StyledBox>
 
         <Link to="/">
-          <StyledButton>Save</StyledButton>
+          <StyledButton data-test-id="SaveButton">Save</StyledButton>
         </Link>
       </StyledApp>
     )
