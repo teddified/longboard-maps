@@ -46,7 +46,9 @@ const TitleSection = styled.div`
 `
 
 const StyledName = styled.div`
-  font-size: 32px;
+  font-size: 28px;
+  width: 160px;
+  overflow: hidden;
 `
 
 const StyledRating = styled.div`
@@ -76,7 +78,6 @@ export default class TripCard extends Component {
 
   render() {
     const { trip } = this.props
-    console.log(trip)
     return (
       <React.Fragment>
         <StyledCard

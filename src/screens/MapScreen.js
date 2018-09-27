@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { aKey } from '../aKey'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { finishIcon } from '../img/finish'
 
 const AddWaypointsButton = styled.button`
   z-index: 1;
@@ -16,7 +17,6 @@ const AddWaypointsButton = styled.button`
   right: 0;
   border-style: none;
   border-radius: 20px;
-  transition: all 0.4s ease-in;
   outline: none;
   &:active {
     background: #1ea362;
@@ -87,9 +87,16 @@ const {
   withGoogleMap,
   GoogleMap,
   DirectionsRenderer,
+  Marker,
 } = require('react-google-maps')
 
 export default class MapScreen extends Component {
+  state = {
+    markerLat: null,
+    markerLng: null,
+    firstRun: true,
+  }
+
   checkStartEnd() {
     const { changeMode, state } = this.props
     if (state.waypoints[0] && state.waypoints[state.waypoints.length - 1]) {
@@ -111,7 +118,26 @@ export default class MapScreen extends Component {
     }
   }
 
+  setAMarker(event) {
+    const { state } = this.props
+    console.log(state.waypoints)
+    if (state.waypoints.length < 2) {
+      let markerLat = event.latLng.lat()
+      let markerLng = event.latLng.lng()
+
+      this.setState({
+        markerLat: markerLat,
+        markerLng: markerLng,
+      })
+    }
+  }
+
+  check(props) {
+    console.log(props)
+  }
+
   getMap() {
+    const google = window.google
     const { changePosition, saveTrip, updateDistance, state } = this.props
     const MapWithADirectionsRenderer = compose(
       withProps({
@@ -122,6 +148,7 @@ export default class MapScreen extends Component {
         loadingElement: <div style={{ height: '100%' }} />,
         containerElement: <div style={{ height: '100vh' }} />,
         mapElement: <div style={{ height: '100%' }} />,
+        google: google,
         state: state,
         changePosition: changePosition,
         saveTrip: saveTrip,
@@ -172,12 +199,11 @@ export default class MapScreen extends Component {
     )(props => (
       <GoogleMap
         defaultZoom={14}
-        onClick={e => this.props.changePosition(e)}
+        onClick={e => this.props.changePosition(e) && this.setAMarker(e)}
         options={{
           disableDefaultUI: true,
         }}
         data-test-id="googlemap"
-        suppressMarkers="true"
         defaultCenter={{ lat: 53.572573, lng: 9.982965 }}
       >
         <PopUp>{state.hint}</PopUp>
@@ -185,7 +211,7 @@ export default class MapScreen extends Component {
           data-test-id="addwaypoints"
           onClick={() => this.checkStartEnd()}
           style={{
-            bottom: state.waypoints.length < 2 ? '-40px' : '10px',
+            visibility: state.waypoints.length < 2 ? 'hidden' : 'visible',
           }}
         >
           {state.addWaypoints ? 'set Start/Goal' : 'add waypoints'}
@@ -198,6 +224,16 @@ export default class MapScreen extends Component {
           >
             Save Trip
           </StyledSaveButton>
+          {this.state.markerLat &&
+            this.state.markerLng &&
+            state.waypoints.length < 2 && (
+              <Marker
+                position={{
+                  lat: this.state.markerLat,
+                  lng: this.state.markerLng,
+                }}
+              />
+            )}
         </Link>
         {props.directions &&
           state.waypoints.length > 1 && (
@@ -206,7 +242,12 @@ export default class MapScreen extends Component {
                 <span>Distance: </span>
                 {this.checkDistance(props.directions)}
               </StyledDistance>
-              <DirectionsRenderer directions={props.directions} />
+              <DirectionsRenderer
+                directions={props.directions}
+                options={{
+                  draggable: true,
+                }}
+              />
             </React.Fragment>
           )}
       </GoogleMap>

@@ -46,6 +46,7 @@ export default class Input extends Component {
       <StyledContainer>
         <StyledInput
           data-test-id="TripInput"
+          maxLength="10"
           onChange={this.updateInputValue}
           value={state.tripName || ''}
           onFocus={() => {
