@@ -112,7 +112,7 @@ export default class MapScreen extends Component {
   }
 
   getMap() {
-    const { changePosition, saveTrip, state } = this.props
+    const { changePosition, saveTrip, updateDistance, state } = this.props
     const MapWithADirectionsRenderer = compose(
       withProps({
         googleMapURL:
@@ -125,6 +125,7 @@ export default class MapScreen extends Component {
         state: state,
         changePosition: changePosition,
         saveTrip: saveTrip,
+        updateDistance: updateDistance,
       }),
       withScriptjs,
       withGoogleMap,
@@ -166,24 +167,6 @@ export default class MapScreen extends Component {
               }
             )
           }
-          if (waypoints.length < 2) {
-            DirectionsService.route(
-              {
-                origin: new google.maps.LatLng(53.572548, 9.983029),
-                destination: new google.maps.LatLng(53.561082, 10),
-                travelMode: google.maps.TravelMode.WALKING,
-              },
-              (result, status) => {
-                if (status === google.maps.DirectionsStatus.OK) {
-                  this.setState({
-                    directions: result,
-                  })
-                } else {
-                  console.error(`error fetching directions ${result}`)
-                }
-              }
-            )
-          }
         },
       })
     )(props => (
@@ -194,9 +177,10 @@ export default class MapScreen extends Component {
           disableDefaultUI: true,
         }}
         data-test-id="googlemap"
+        suppressMarkers="true"
+        defaultCenter={{ lat: 53.572573, lng: 9.982965 }}
       >
         <PopUp>{state.hint}</PopUp>
-
         <AddWaypointsButton
           data-test-id="addwaypoints"
           onClick={() => this.checkStartEnd()}
@@ -210,22 +194,21 @@ export default class MapScreen extends Component {
           <StyledSaveButton
             disabled={state.waypoints.length > 1 ? false : true}
             data-test-id="savetrip"
+            onClick={() => props.updateDistance(props.directions)}
           >
             Save Trip
           </StyledSaveButton>
         </Link>
-        {props.directions && (
-          <React.Fragment>
-            <StyledDistance data-test-id="distancelabel">
-              <span>Distance: </span>
-              {this.checkDistance(props.directions)}
-            </StyledDistance>
-            <DirectionsRenderer
-              directions={props.directions}
-              suppressMarkers="true"
-            />
-          </React.Fragment>
-        )}
+        {props.directions &&
+          state.waypoints.length > 1 && (
+            <React.Fragment>
+              <StyledDistance data-test-id="distancelabel">
+                <span>Distance: </span>
+                {this.checkDistance(props.directions)}
+              </StyledDistance>
+              <DirectionsRenderer directions={props.directions} />
+            </React.Fragment>
+          )}
       </GoogleMap>
     ))
     return MapWithADirectionsRenderer

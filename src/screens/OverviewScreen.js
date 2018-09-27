@@ -66,15 +66,16 @@ const StyledTripCardSection = styled.div`
 
 export default class OverviewScreen extends Component {
   render() {
+    console.log(this.props.state)
     return (
       <React.Fragment>
         <StyledApp>
           <StyledHeader data-test-id="TripHeader">Your Trips</StyledHeader>
           <StyledBox>
             <StyledTripCardSection data-test-id="TripCardSection">
-              {/* {this.props.state.trips.map((trip, index) => { */}
-              <TripCard state={this.props.state} />
-              {/* })} */}
+              {this.props.state.trips.map((trip, index) => {
+                return <TripCard key={index} trip={trip} />
+              })}
             </StyledTripCardSection>
           </StyledBox>
           <Link to="/addRoute">

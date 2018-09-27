@@ -54,7 +54,6 @@ const StyledRatingBoxSection = styled.div`
   width: 100%;
   height: 80px;
   border: 1px solid #4a90e2;
-  /* border-bottom: 3px solid #273d7a; */
 `
 
 const StyledBoxTitle = styled.div`
@@ -80,7 +79,6 @@ const StyledRatingBox = styled.div`
 export default class SaveScreen extends Component {
   render() {
     const { saveTrip, state } = this.props
-
     return (
       <StyledApp>
         <StyledHeader data-test-id="SaveHeader">Save Trip</StyledHeader>

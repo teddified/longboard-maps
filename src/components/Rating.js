@@ -10,11 +10,6 @@ const StyledBoxActive = styled.div`
   justify-content: center;
   align-items: center;
   transition: 0.1s all ease-in-out;
-  &:hover {
-    color: #4a90e2;
-    background: white;
-    border: 1px solid #4a90e2;
-  }
 `
 
 const StyledBoxNotActive = styled.div`

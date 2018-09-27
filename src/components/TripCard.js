@@ -10,7 +10,7 @@ const StyledCard = styled.div`
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  padding-left: 10px;
+  padding: 10px;
   overflow: hidden;
   background: #eee;
   border-bottom: 3px solid #274d7a;
@@ -27,13 +27,35 @@ const StyledCard = styled.div`
 `
 
 const DetailBody = styled.div`
+  height: 90px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+`
+
+const StyledItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const TitleSection = styled.div`
+  height: 46px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+`
+
+const StyledName = styled.div`
+  font-size: 32px;
+`
+
+const StyledRating = styled.div`
+  text-align: right;
 `
 
 export default class TripCard extends Component {
   state = {
-    cardHeight: '70px',
+    cardHeight: '80px',
     expand: false,
     ratingInNumber: null,
   }
@@ -41,52 +63,79 @@ export default class TripCard extends Component {
   renderDetails() {
     if (this.state.expand) {
       this.setState({
-        cardHeight: '70px',
+        cardHeight: '80px',
         expand: false,
       })
     } else {
       this.setState({
-        cardHeight: '200px',
+        cardHeight: '160px',
         expand: true,
       })
     }
   }
 
   render() {
-    const { state } = this.props
+    const { trip } = this.props
+    console.log(trip)
     return (
       <React.Fragment>
-        {state.trips &&
-          state.trips.map((trip, index) => {
-            return (
-              <StyledCard
-                key={index}
-                data-test-id="TripCard"
-                onClick={() => this.renderDetails()}
-                cardHeight={this.state.cardHeight}
-              >
-                <titleSection>
-                  <h2>{trip.tripName}</h2>
-                  <div>Rating: {trip.totalRating}</div>
-                </titleSection>
-                {this.state.expand ? (
-                  <DetailBody>
-                    <div>test1</div>
-                    <div>test2</div>
-                    <div>test3</div>
-                  </DetailBody>
-                ) : (
-                  ''
-                )}
-                <div>
-                  {/* <img
+        <StyledCard
+          data-test-id="TripCard"
+          onClick={() => this.renderDetails()}
+          cardHeight={this.state.cardHeight}
+        >
+          <TitleSection>
+            <StyledName>{trip.tripName}</StyledName>
+            <div>
+              <StyledRating>Rating: {trip.totalRating}</StyledRating>
+              <StyledRating>Distance: {trip.distance}</StyledRating>
+            </div>
+          </TitleSection>
+          {this.state.expand ? (
+            <DetailBody>
+              <StyledItem>
+                Road:
+                <span>
+                  {trip.rating.road.easy ? 'easy' : ''}
+                  {trip.rating.road.medium ? 'medium' : ''}
+                  {trip.rating.road.hard ? 'hard' : ''}
+                </span>
+              </StyledItem>
+              <StyledItem>
+                Level of Crowdiness:
+                <span>
+                  {trip.rating.crowd.easy ? 'easy' : ''}
+                  {trip.rating.crowd.medium ? 'medium' : ''}
+                  {trip.rating.crowd.hard ? 'hard' : ''}
+                </span>
+              </StyledItem>
+              <StyledItem>
+                Difficulty:
+                <span>
+                  {trip.rating.difficulty.easy ? 'easy' : ''}
+                  {trip.rating.difficulty.medium ? 'medium' : ''}
+                  {trip.rating.difficulty.hard ? 'hard' : ''}
+                </span>
+              </StyledItem>
+              <StyledItem>
+                Gradient:
+                <span>
+                  {trip.rating.gradient.easy ? 'easy' : ''}
+                  {trip.rating.gradient.medium ? 'medium' : ''}
+                  {trip.rating.gradient.hard ? 'hard' : ''}
+                </span>
+              </StyledItem>
+            </DetailBody>
+          ) : (
+            ''
+          )}
+          <div>
+            {/* <img
                     src="https://source.unsplash.com/random/100x100"
                     alt=""
                   /> */}
-                </div>
-              </StyledCard>
-            )
-          })}
+          </div>
+        </StyledCard>
       </React.Fragment>
     )
   }

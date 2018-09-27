@@ -3,17 +3,18 @@ import ACTIONS from './actions'
 
 const initialState = {
   trips: [
-    {
-      waypoints: [{ lat: 54, lng: 10 }, { lat: 53, lng: 9 }],
-      tripName: 'test',
-      rating: {
-        road: { easy: true, medium: false, hard: false },
-        crowd: { easy: true, medium: false, hard: false },
-        difficulty: { easy: true, medium: false, hard: false },
-        gradient: { easy: true, medium: false, hard: false },
-      },
-      totalRating: 1,
-    },
+    // {
+    //   waypoints: [{ lat: 54, lng: 10 }, { lat: 53, lng: 9 }],
+    //   tripName: 'test',
+    //   rating: {
+    //     road: { easy: true, medium: false, hard: false },
+    //     crowd: { easy: true, medium: false, hard: false },
+    //     difficulty: { easy: true, medium: false, hard: false },
+    //     gradient: { easy: true, medium: false, hard: false },
+    //   },
+    //   totalRating: 1,
+    //   distance: '2 Km',
+    // },
   ],
   waypoints: [],
   StartBool: true,
@@ -137,10 +138,12 @@ export default function(state = initialState, action = {}) {
             tripName: state.tripName,
             rating: state.rating,
             totalRating: result,
+            distance: state.distance,
           },
         ],
         waypoints: [],
         tripName: null,
+        distance: null,
         rating: {
           road: { easy: true, medium: false, hard: false },
           crowd: { easy: true, medium: false, hard: false },
@@ -183,6 +186,31 @@ export default function(state = initialState, action = {}) {
       return {
         ...state,
         tripName: action.payload,
+      }
+
+    case ACTIONS.UPDATE_DISTANCE:
+      if (state.waypoints.length > 2) {
+        let distance = action.payload.distance.routes[0].legs.reduce(
+          (acc, curr) => {
+            return acc + curr.distance.value
+          },
+          0
+        )
+        const result = distance / 1000 + ' Km'
+        console.log(result)
+        return {
+          ...state,
+          distance: result,
+        }
+      } else if (state.waypoints.length === 2) {
+        console.log(action.payload)
+        const result = action.payload.distance.routes[0].legs[0].distance.text
+        return {
+          ...state,
+          distance: result,
+        }
+      } else {
+        return state
       }
 
     default:
