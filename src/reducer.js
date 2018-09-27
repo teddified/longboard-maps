@@ -2,13 +2,32 @@
 import ACTIONS from './actions'
 
 const initialState = {
-  trips: [],
+  trips: [
+    {
+      waypoints: [{ lat: 54, lng: 10 }, { lat: 53, lng: 9 }],
+      tripName: 'test',
+      rating: {
+        road: { easy: true, medium: false, hard: false },
+        crowd: { easy: true, medium: false, hard: false },
+        difficulty: { easy: true, medium: false, hard: false },
+        gradient: { easy: true, medium: false, hard: false },
+      },
+      totalRating: 1,
+    },
+  ],
   waypoints: [],
   StartBool: true,
   addWaypoints: false,
   hint: 'Place your Starting Point',
   directions: null,
   distance: null,
+  tripName: null,
+  rating: {
+    road: { easy: true, medium: false, hard: false },
+    crowd: { easy: true, medium: false, hard: false },
+    difficulty: { easy: true, medium: false, hard: false },
+    gradient: { easy: true, medium: false, hard: false },
+  },
 }
 
 export default function(state = initialState, action = {}) {
@@ -83,10 +102,87 @@ export default function(state = initialState, action = {}) {
       }
 
     case ACTIONS.SAVE_TRIP:
+      const roadeasy = state.rating.road.easy ? 1 : 0
+      const roadmed = state.rating.road.medium ? 2 : 0
+      const roadhard = state.rating.road.hard ? 3 : 0
+      const crowdeasy = state.rating.crowd.easy ? 1 : 0
+      const crowdmed = state.rating.crowd.medium ? 2 : 0
+      const crowdhard = state.rating.crowd.hard ? 3 : 0
+      const difeasy = state.rating.difficulty.easy ? 1 : 0
+      const difmed = state.rating.difficulty.medium ? 2 : 0
+      const difhard = state.rating.difficulty.hard ? 3 : 0
+      const gradienteasy = state.rating.gradient.easy ? 1 : 0
+      const gradientmed = state.rating.gradient.medium ? 2 : 0
+      const gradienthard = state.rating.gradient.hard ? 3 : 0
+      const result =
+        (roadeasy +
+          roadmed +
+          roadhard +
+          crowdeasy +
+          crowdmed +
+          crowdhard +
+          difeasy +
+          difmed +
+          difhard +
+          gradienteasy +
+          gradientmed +
+          gradienthard) /
+        4
       return {
         ...state,
-        trips: [...state.trips, state.waypoints],
+        trips: [
+          ...state.trips,
+          {
+            waypoints: state.waypoints,
+            tripName: state.tripName,
+            rating: state.rating,
+            totalRating: result,
+          },
+        ],
         waypoints: [],
+        tripName: null,
+        rating: {
+          road: { easy: true, medium: false, hard: false },
+          crowd: { easy: true, medium: false, hard: false },
+          difficulty: { easy: true, medium: false, hard: false },
+          gradient: { easy: true, medium: false, hard: false },
+        },
+      }
+
+    case ACTIONS.CHANGE_TO_ACTIVE:
+      switch (action.payload.value) {
+        case 'easy':
+          return {
+            ...state,
+            rating: {
+              ...state.rating,
+              [action.payload.name]: { easy: true, medium: false, hard: false },
+            },
+          }
+        case 'medium':
+          return {
+            ...state,
+            rating: {
+              ...state.rating,
+              [action.payload.name]: { easy: false, medium: true, hard: false },
+            },
+          }
+        case 'hard':
+          return {
+            ...state,
+            rating: {
+              ...state.rating,
+              [action.payload.name]: { easy: false, medium: false, hard: true },
+            },
+          }
+        default:
+          return state
+      }
+
+    case ACTIONS.UPDATE_TRIP_NAME:
+      return {
+        ...state,
+        tripName: action.payload,
       }
 
     default:

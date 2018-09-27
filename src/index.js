@@ -13,6 +13,8 @@ injectGlobal`
   }
   * {
   font-family: 'Source Sans Pro', sans-serif;
+  box-sizing: border-box;
+  user-select: none;
   }
 }
 `

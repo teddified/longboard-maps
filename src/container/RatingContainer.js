@@ -1,16 +1,16 @@
 import { connect } from 'react-redux'
-import SaveScreen from '../screens/SaveScreen'
-import { saveTrip } from '../actions'
+import Rating from '../components/Rating'
+import { changeToActive } from '../actions'
 
 const mapStateToProps = state => ({
   state: state,
 })
 
 const mapDispatchToProps = dispatch => ({
-  saveTrip: name => dispatch(saveTrip({ name })),
+  changeToActive: (value, name) => dispatch(changeToActive({ value, name })),
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SaveScreen)
+)(Rating)

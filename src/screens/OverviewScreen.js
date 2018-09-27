@@ -10,7 +10,7 @@ const StyledApp = styled.div`
   background: white;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   overflow: hidden;
@@ -72,7 +72,9 @@ export default class OverviewScreen extends Component {
           <StyledHeader data-test-id="TripHeader">Your Trips</StyledHeader>
           <StyledBox>
             <StyledTripCardSection data-test-id="TripCardSection">
-              <TripCard />
+              {/* {this.props.state.trips.map((trip, index) => { */}
+              <TripCard state={this.props.state} />
+              {/* })} */}
             </StyledTripCardSection>
           </StyledBox>
           <Link to="/addRoute">

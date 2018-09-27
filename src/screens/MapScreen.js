@@ -3,7 +3,7 @@ import { aKey } from '../aKey'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-const StyledButton = styled.button`
+const AddWaypointsButton = styled.button`
   z-index: 1;
   position: absolute;
   bottom: 10px;
@@ -33,7 +33,6 @@ const StyledSaveButton = styled.button`
   left: 10px;
   border-style: none;
   border-radius: 20px;
-  transition: all 0.4s ease-in;
   outline: none;
   &:active {
     background: #1ea362;
@@ -61,8 +60,8 @@ const PopUp = styled.div`
 `
 
 const StyledDistance = styled.div`
-  height: 20px;
-  width: 140px;
+  height: 30px;
+  width: 200px;
   border-radius: 20px;
   background: aliceblue;
   position: absolute;
@@ -73,7 +72,7 @@ const StyledDistance = styled.div`
   align-items: center;
   padding: 10px;
 
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 680px) {
     top: 60px;
     margin-left: auto;
     margin-right: auto;
@@ -91,30 +90,6 @@ const {
 } = require('react-google-maps')
 
 export default class MapScreen extends Component {
-  // checkStart() {
-  //   const { state } = this.props
-  //   if (state.waypoints[0]) {
-  //     return {
-  //       lat: state.waypoints[0].lat,
-  //       lng: state.waypoints[0].lng,
-  //     }
-  //   } else {
-  //     return {}
-  //   }
-  // }
-
-  // checkEnd() {
-  //   const { state } = this.props
-  //   if (state.waypoints[state.waypoints.length - 1]) {
-  //     return {
-  //       lat: state.waypoints[state.waypoints.length - 1].lat,
-  //       lng: state.waypoints[state.waypoints.length - 1].lng,
-  //     }
-  //   } else {
-  //     return {}
-  //   }
-  // }
-
   checkStartEnd() {
     const { changeMode, state } = this.props
     if (state.waypoints[0] && state.waypoints[state.waypoints.length - 1]) {
@@ -126,7 +101,6 @@ export default class MapScreen extends Component {
 
   checkDistance(directions) {
     const { state } = this.props
-    console.log(directions)
     if (state.waypoints.length > 2) {
       let distance = directions.routes[0].legs.reduce((acc, curr) => {
         return acc + curr.distance.value
@@ -139,7 +113,6 @@ export default class MapScreen extends Component {
 
   getMap() {
     const { changePosition, saveTrip, state } = this.props
-
     const MapWithADirectionsRenderer = compose(
       withProps({
         googleMapURL:
@@ -224,18 +197,18 @@ export default class MapScreen extends Component {
       >
         <PopUp>{state.hint}</PopUp>
 
-        <StyledButton
+        <AddWaypointsButton
           data-test-id="addwaypoints"
           onClick={() => this.checkStartEnd()}
           style={{
             bottom: state.waypoints.length < 2 ? '-40px' : '10px',
           }}
         >
-          {state.addWaypoints ? 'end' : 'add waypoints'}
-        </StyledButton>
+          {state.addWaypoints ? 'set Start/Goal' : 'add waypoints'}
+        </AddWaypointsButton>
         <Link to="/saveTrip">
           <StyledSaveButton
-            onClick={this.props.saveTrip}
+            disabled={state.waypoints.length > 1 ? false : true}
             data-test-id="savetrip"
           >
             Save Trip

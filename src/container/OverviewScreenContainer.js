@@ -3,7 +3,7 @@ import OverviewScreen from '../screens/OverviewScreen'
 import {} from '../actions'
 
 const mapStateToProps = state => ({
-  // players: state.players,
+  state: state,
 })
 
 const mapDispatchToProps = dispatch => ({

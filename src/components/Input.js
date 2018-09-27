@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const StyledInput = styled.input`
+  box-sizing: border-box;
   height: 24px;
   width: 200px;
   outline: none;
   padding-bottom: 2px;
-  font-size: 18px;
+  font-size: 16px;
   border: none;
-  border-bottom: 1px solid #274d7a;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
 `
 
 const StyledContainer = styled.div`
   position: relative;
+  height: 24px;
 `
 
 const StyledBorder = styled.div`
@@ -21,52 +23,31 @@ const StyledBorder = styled.div`
   position: absolute;
   bottom: 0px;
   width: ${props => props.borderWidth};
-  height: 1.2px;
+  height: 1px;
   padding: 0;
   margin: 0;
-  background: hotpink;
+  background: #4a90e2;
   transition: 0.2s all ease-out;
 `
 
 export default class Input extends Component {
-  static propTypes = {
-    onSubmit: PropTypes.func,
-  }
-
   state = {
-    inputValue: '',
     borderWidth: '0',
   }
 
   updateInputValue = event => {
-    this.setState({
-      inputValue: event.target.value,
-    })
-  }
-
-  checkForEnterButton = event => {
-    if (event.key === 'Enter') {
-      this.submit()
-    }
-  }
-
-  submit = () => {
-    if (this.state.inputValue !== '') {
-      this.props.onSubmit(this.state.inputValue)
-      this.setState({
-        inputValue: '',
-      })
-    }
+    const { updateTripName } = this.props
+    updateTripName(event.target.value)
   }
 
   render() {
+    const { state } = this.props
     return (
       <StyledContainer>
         <StyledInput
           data-test-id="TripInput"
           onChange={this.updateInputValue}
-          onKeyUp={this.checkForEnterButton}
-          value={this.state.inputValue}
+          value={state.tripName || ''}
           onFocus={() => {
             this.setState({ borderWidth: '100%' })
           }}
