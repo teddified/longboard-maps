@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import TripCard from '../components/TripCard'
+import NavBar from '../components/Navbar'
 
 const StyledApp = styled.div`
   margin: 0 auto;
   width: 320px;
   height: 673px;
-  background: white;
-  border-radius: 10px;
+  background: #f7f7f7;
+  /* border-radius: 10px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,30 +17,30 @@ const StyledApp = styled.div`
 `
 
 const StyledHeader = styled.div`
-  background: #4a90e2;
+  background: #343a40;
   width: 100%;
-  height: 10%;
+  height: 8%;
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 38px;
-  color: #274d7a;
-  border-bottom: 3px solid #273d7a;
+  font-size: 28px;
+  color: white;
+  /* border-bottom: 3px solid #ccc; */
 `
 
-const StyledButton = styled.button`
-  width: 300px;
-  height: 10%;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 10px;
-  border-bottom: 3px solid #274d7a;
-`
+// const StyledButton = styled.button`
+//   width: 300px;
+//   height: 10%;
+//   border-radius: 10px;
+//   text-align: center;
+//   font-size: 24px;
+//   margin-bottom: 10px;
+//   border-bottom: 3px solid #274d7a;
+// `
 
 const StyledBox = styled.div`
-  height: 80%;
+  height: 82%;
   overflow: hidden;
   position: relative;
 `
@@ -78,9 +78,10 @@ export default class OverviewScreen extends Component {
               })}
             </StyledTripCardSection>
           </StyledBox>
-          <Link to="/addRoute">
+          {/* <Link to="/addRoute">
             <StyledButton data-test-id="AddButton">+</StyledButton>
-          </Link>
+          </Link> */}
+          <NavBar />
         </StyledApp>
       </React.Fragment>
     )

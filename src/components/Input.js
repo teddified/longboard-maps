@@ -57,6 +57,7 @@ export default class Input extends Component {
           }}
           type="text"
           placeholder={this.props.placeholder}
+          
         />
         <StyledBorder borderWidth={this.state.borderWidth} />
       </StyledContainer>

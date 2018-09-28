@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { aKey } from '../aKey'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { finishIcon } from '../img/finish'
 
 const AddWaypointsButton = styled.button`
   z-index: 1;
