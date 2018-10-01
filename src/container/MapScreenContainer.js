@@ -5,6 +5,7 @@ import {
   changeMode,
   saveTrip,
   updateDistance,
+  saveDirections,
 } from '../actions'
 
 const mapStateToProps = state => ({
@@ -16,6 +17,7 @@ const mapDispatchToProps = dispatch => ({
   changeMode: () => dispatch(changeMode()),
   saveTrip: () => dispatch(saveTrip()),
   updateDistance: distance => dispatch(updateDistance({ distance })),
+  saveDirections: directions => dispatch(saveDirections({ directions })),
 })
 
 export default connect(

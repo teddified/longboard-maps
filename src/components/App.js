@@ -7,6 +7,7 @@ import reducer from '../reducer'
 import MapScreenContainer from '../container/MapScreenContainer'
 import OverviewScreenContainer from '../container/OverviewScreenContainer'
 import SaveScreenContainer from '../container/SaveScreenContainer'
+import RouteCollectionScreenContainer from '../container/RouteCollectionScreenContainer'
 
 const store = createStore(reducer, applyMiddleware(saveToLocalStorage))
 
@@ -25,6 +26,10 @@ export default class App extends Component {
             <Route exact path="/" component={OverviewScreenContainer} />
             <Route path="/addRoute" component={MapScreenContainer} />
             <Route path="/saveTrip" component={SaveScreenContainer} />
+            <Route
+              path="/routeCollection"
+              component={RouteCollectionScreenContainer}
+            />
           </div>
         </Provider>
       </Router>

@@ -3,6 +3,18 @@ import { aKey } from '../aKey'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+// const StyledApp = styled.div`
+//   margin: 0 auto;
+//   width: 320px;
+//   height: 673px;
+//   background: #f7f7f7;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   flex-direction: column;
+//   overflow: hidden;
+// `
+
 const AddWaypointsButton = styled.button`
   z-index: 1;
   position: absolute;
@@ -119,7 +131,6 @@ export default class MapScreen extends Component {
 
   setAMarker(event) {
     const { state } = this.props
-    console.log(state.waypoints)
     if (state.waypoints.length < 2) {
       let markerLat = event.latLng.lat()
       let markerLng = event.latLng.lng()
@@ -131,13 +142,9 @@ export default class MapScreen extends Component {
     }
   }
 
-  check(props) {
-    console.log(props)
-  }
-
   getMap() {
     const google = window.google
-    const { changePosition, saveTrip, updateDistance, state } = this.props
+    const { changePosition, updateDistance, saveDirections, state } = this.props
     const MapWithADirectionsRenderer = compose(
       withProps({
         googleMapURL:
@@ -150,8 +157,8 @@ export default class MapScreen extends Component {
         google: google,
         state: state,
         changePosition: changePosition,
-        saveTrip: saveTrip,
         updateDistance: updateDistance,
+        saveDirections: saveDirections,
       }),
       withScriptjs,
       withGoogleMap,
@@ -219,7 +226,10 @@ export default class MapScreen extends Component {
           <StyledSaveButton
             disabled={state.waypoints.length > 1 ? false : true}
             data-test-id="savetrip"
-            onClick={() => props.updateDistance(props.directions)}
+            onClick={() =>
+              props.updateDistance(props.directions) &&
+              props.saveDirections(props.directions)
+            }
           >
             Save Trip
           </StyledSaveButton>
@@ -241,6 +251,12 @@ export default class MapScreen extends Component {
                 <span>Distance: </span>
                 {this.checkDistance(props.directions)}
               </StyledDistance>
+              <DirectionsRenderer
+                directions={props.directions}
+                options={{
+                  draggable: true,
+                }}
+              />
               <DirectionsRenderer
                 directions={props.directions}
                 options={{

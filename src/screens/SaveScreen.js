@@ -9,7 +9,6 @@ const StyledApp = styled.div`
   width: 320px;
   height: 673px;
   background: white;
-  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,15 +17,15 @@ const StyledApp = styled.div`
 `
 
 const StyledHeader = styled.div`
-  background: #4a90e2;
+  background: #343a40;
   width: 100%;
-  height: 10%;
+  height: 8%;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 38px;
-  color: #274d7a;
-  border-bottom: 3px solid #273d7a;
+  font-size: 28px;
+  color: white;
 `
 
 const StyledBody = styled.div`

@@ -2,20 +2,7 @@
 import ACTIONS from './actions'
 
 const initialState = {
-  trips: [
-    // {
-    //   waypoints: [{ lat: 54, lng: 10 }, { lat: 53, lng: 9 }],
-    //   tripName: 'test',
-    //   rating: {
-    //     road: { easy: true, medium: false, hard: false },
-    //     crowd: { easy: true, medium: false, hard: false },
-    //     difficulty: { easy: true, medium: false, hard: false },
-    //     gradient: { easy: true, medium: false, hard: false },
-    //   },
-    //   totalRating: 1,
-    //   distance: '2 Km',
-    // },
-  ],
+  trips: [],
   waypoints: [],
   StartBool: true,
   addWaypoints: false,
@@ -129,6 +116,12 @@ export default function(state = initialState, action = {}) {
           gradientmed +
           gradienthard) /
         4
+      console.log(action.payload)
+      console.log(state.directions)
+      const path = state.directions.routes[0].overview_path.map(path => {
+        return [...path, { lat: path.lat(), lng: path.lng() }]
+      })
+      console.log(path)
       return {
         ...state,
         trips: [
@@ -139,11 +132,17 @@ export default function(state = initialState, action = {}) {
             rating: state.rating,
             totalRating: result,
             distance: state.distance,
+            directions: state.directions,
+            polyline: path,
           },
         ],
         waypoints: [],
         tripName: null,
+        directions: null,
         distance: null,
+        StartBool: true,
+        addWaypoints: false,
+        hint: 'Place your Starting Point',
         rating: {
           road: { easy: true, medium: false, hard: false },
           crowd: { easy: true, medium: false, hard: false },
@@ -197,13 +196,11 @@ export default function(state = initialState, action = {}) {
           0
         )
         const result = distance / 1000 + ' Km'
-        console.log(result)
         return {
           ...state,
           distance: result,
         }
       } else if (state.waypoints.length === 2) {
-        console.log(action.payload)
         const result = action.payload.distance.routes[0].legs[0].distance.text
         return {
           ...state,
@@ -211,6 +208,12 @@ export default function(state = initialState, action = {}) {
         }
       } else {
         return state
+      }
+
+    case ACTIONS.SAVE_DIRECTIONS:
+      return {
+        ...state,
+        directions: action.payload.directions,
       }
 
     default:

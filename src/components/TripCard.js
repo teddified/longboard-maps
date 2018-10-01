@@ -46,8 +46,8 @@ const TitleSection = styled.div`
 `
 
 const StyledName = styled.div`
-  font-size: 28px;
-  width: 160px;
+  font-size: 24px;
+  width: 140px;
   overflow: hidden;
 `
 
@@ -130,12 +130,6 @@ export default class TripCard extends Component {
           ) : (
             ''
           )}
-          <div>
-            {/* <img
-                    src="https://source.unsplash.com/random/100x100"
-                    alt=""
-                  /> */}
-          </div>
         </StyledCard>
       </React.Fragment>
     )

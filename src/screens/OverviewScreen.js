@@ -8,7 +8,6 @@ const StyledApp = styled.div`
   width: 320px;
   height: 673px;
   background: #f7f7f7;
-  /* border-radius: 10px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,7 +65,6 @@ const StyledTripCardSection = styled.div`
 
 export default class OverviewScreen extends Component {
   render() {
-    console.log(this.props.state)
     return (
       <React.Fragment>
         <StyledApp>
@@ -78,9 +76,6 @@ export default class OverviewScreen extends Component {
               })}
             </StyledTripCardSection>
           </StyledBox>
-          {/* <Link to="/addRoute">
-            <StyledButton data-test-id="AddButton">+</StyledButton>
-          </Link> */}
           <NavBar />
         </StyledApp>
       </React.Fragment>
