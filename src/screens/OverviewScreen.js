@@ -5,8 +5,8 @@ import NavBar from '../components/Navbar'
 
 const StyledApp = styled.div`
   margin: 0 auto;
-  width: 320px;
-  height: 673px;
+  width: 100%;
+  height: 100vh;
   background: #f7f7f7;
   display: flex;
   justify-content: space-between;
@@ -25,28 +25,18 @@ const StyledHeader = styled.div`
   align-items: center;
   font-size: 28px;
   color: white;
-  /* border-bottom: 3px solid #ccc; */
 `
-
-// const StyledButton = styled.button`
-//   width: 300px;
-//   height: 10%;
-//   border-radius: 10px;
-//   text-align: center;
-//   font-size: 24px;
-//   margin-bottom: 10px;
-//   border-bottom: 3px solid #274d7a;
-// `
 
 const StyledBox = styled.div`
   height: 82%;
+  width: 100%;
   overflow: hidden;
   position: relative;
 `
 
 const StyledTripCardSection = styled.div`
   height: 100%;
-  width: 320px;
+  width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -64,6 +54,12 @@ const StyledTripCardSection = styled.div`
 `
 
 export default class OverviewScreen extends Component {
+  componentDidMount() {
+    if (this.props.state.firstRun) {
+      this.props.fetchTrips()
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -76,7 +72,7 @@ export default class OverviewScreen extends Component {
               })}
             </StyledTripCardSection>
           </StyledBox>
-          <NavBar />
+          <NavBar navHeight={'10%'} />
         </StyledApp>
       </React.Fragment>
     )

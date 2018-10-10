@@ -2,24 +2,20 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const StyledCard = styled.div`
+  position: relative;
   width: 95%;
   height: ${props => props.cardHeight};
   min-height: ${props => props.cardHeight};
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 3px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   padding: 10px;
   overflow: hidden;
-  background: #eee;
-  border-bottom: 3px solid #274d7a;
+  background: white;
   transition: 0.3s all ease-out;
-
-  > imgageSection {
-    width: 100%;
-    height: 100%;
-  }
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23);
+  justify-content: space-between;
 
   > tripTitle {
     align-self: center;
@@ -27,7 +23,7 @@ const StyledCard = styled.div`
 `
 
 const DetailBody = styled.div`
-  height: 90px;
+  height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,17 +38,22 @@ const TitleSection = styled.div`
   height: 46px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #ddd;
 `
 
 const StyledName = styled.div`
   font-size: 24px;
   width: 140px;
   overflow: hidden;
+
+  @media screen and (max-width: 374px) {
+    font-size: 18px;
+  }
 `
 
 const StyledRating = styled.div`
-  text-align: right;
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
 `
 
 export default class TripCard extends Component {
@@ -70,7 +71,7 @@ export default class TripCard extends Component {
       })
     } else {
       this.setState({
-        cardHeight: '160px',
+        cardHeight: '200px',
         expand: true,
       })
     }
@@ -88,42 +89,72 @@ export default class TripCard extends Component {
           <TitleSection>
             <StyledName>{trip.tripName}</StyledName>
             <div>
-              <StyledRating>Rating: {trip.totalRating}</StyledRating>
-              <StyledRating>Distance: {trip.distance}</StyledRating>
+              <StyledRating>
+                <span style={{ color: '#888' }}>Rating:</span>
+                <span>{trip.totalRating}</span>
+              </StyledRating>
+              <StyledRating>
+                <span style={{ color: '#888' }}>Distance:</span>
+                <span>{trip.distance}</span>{' '}
+              </StyledRating>
             </div>
           </TitleSection>
           {this.state.expand ? (
             <DetailBody>
               <StyledItem>
-                Road:
+                <div style={{ color: '#888' }}>Road:</div>
                 <span>
-                  {trip.rating.road.easy ? 'easy' : ''}
-                  {trip.rating.road.medium ? 'medium' : ''}
-                  {trip.rating.road.hard ? 'hard' : ''}
+                  <div style={{ color: 'green' }}>
+                    {trip.rating.road.easy ? 'easy' : ''}
+                  </div>
+                  <div style={{ color: 'orange' }}>
+                    {trip.rating.road.medium ? 'medium' : ''}
+                  </div>
+                  <div style={{ color: 'red' }}>
+                    {trip.rating.road.hard ? 'hard' : ''}
+                  </div>
                 </span>
               </StyledItem>
               <StyledItem>
-                Level of Crowdiness:
+                <div style={{ color: '#888' }}>Level of Crowdiness:</div>
                 <span>
-                  {trip.rating.crowd.easy ? 'easy' : ''}
-                  {trip.rating.crowd.medium ? 'medium' : ''}
-                  {trip.rating.crowd.hard ? 'hard' : ''}
+                  <div style={{ color: 'green' }}>
+                    {trip.rating.crowd.easy ? 'easy' : ''}
+                  </div>
+                  <div style={{ color: 'orange' }}>
+                    {trip.rating.crowd.medium ? 'medium' : ''}
+                  </div>
+                  <div style={{ color: 'red' }}>
+                    {trip.rating.crowd.hard ? 'hard' : ''}
+                  </div>
                 </span>
               </StyledItem>
               <StyledItem>
-                Difficulty:
+                <div style={{ color: '#888' }}>Difficulty:</div>
                 <span>
-                  {trip.rating.difficulty.easy ? 'easy' : ''}
-                  {trip.rating.difficulty.medium ? 'medium' : ''}
-                  {trip.rating.difficulty.hard ? 'hard' : ''}
+                  <div style={{ color: 'green' }}>
+                    {trip.rating.difficulty.easy ? 'easy' : ''}
+                  </div>
+                  <div style={{ color: 'orange' }}>
+                    {trip.rating.difficulty.medium ? 'medium' : ''}
+                  </div>
+                  <div style={{ color: 'red' }}>
+                    {trip.rating.difficulty.hard ? 'hard' : ''}
+                  </div>
                 </span>
               </StyledItem>
               <StyledItem>
-                Gradient:
+                <div style={{ color: '#888' }}>Gradient:</div>
                 <span>
-                  {trip.rating.gradient.easy ? 'easy' : ''}
-                  {trip.rating.gradient.medium ? 'medium' : ''}
-                  {trip.rating.gradient.hard ? 'hard' : ''}
+                  <div style={{ color: 'green' }}>
+                    {trip.rating.gradient.easy ? 'easy' : ''}
+                  </div>
+                  <div style={{ color: 'orange' }}>
+                    {trip.rating.gradient.medium ? 'medium' : ''}
+                  </div>
+                  <div style={{ color: 'red' }}>
+                    {trip.rating.gradient.hard ? 'hard' : ''}
+                  </div>
                 </span>
               </StyledItem>
             </DetailBody>

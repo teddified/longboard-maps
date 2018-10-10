@@ -2,18 +2,38 @@ import React, { Component } from 'react'
 import { aKey } from '../aKey'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 
-// const StyledApp = styled.div`
-//   margin: 0 auto;
-//   width: 320px;
-//   height: 673px;
-//   background: #f7f7f7;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   flex-direction: column;
-//   overflow: hidden;
-// `
+const StyledApp = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+`
+
+const StyledHeader = styled.div`
+  background: #343a40;
+  width: 100%;
+  height: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  color: white;
+`
+
+const StyledMapWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
+
+const StyledWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 82%;
+`
 
 const AddWaypointsButton = styled.button`
   z-index: 1;
@@ -33,6 +53,14 @@ const AddWaypointsButton = styled.button`
     background: #1ea362;
     border: 1px solid #ddd;
   }
+
+  @media screen and (max-width: 680px) {
+    bottom: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
 `
 const StyledSaveButton = styled.button`
   z-index: 1;
@@ -48,6 +76,13 @@ const StyledSaveButton = styled.button`
   &:active {
     background: #1ea362;
     border: 1px solid #ddd;
+  }
+  @media screen and (max-width: 680px) {
+    bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
   }
 `
 
@@ -152,7 +187,7 @@ export default class MapScreen extends Component {
           aKey +
           '&v=3.exp&libraries=geometry,drawing,places',
         loadingElement: <div style={{ height: '100%' }} />,
-        containerElement: <div style={{ height: '100vh' }} />,
+        containerElement: <div style={{ height: '100%' }} />,
         mapElement: <div style={{ height: '100%' }} />,
         google: google,
         state: state,
@@ -208,6 +243,260 @@ export default class MapScreen extends Component {
         onClick={e => this.props.changePosition(e) && this.setAMarker(e)}
         options={{
           disableDefaultUI: true,
+          styles: [
+            {
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#212121',
+                },
+              ],
+            },
+            {
+              elementType: 'labels.icon',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#757575',
+                },
+              ],
+            },
+            {
+              elementType: 'labels.text.stroke',
+              stylers: [
+                {
+                  color: '#212121',
+                },
+              ],
+            },
+            {
+              featureType: 'administrative',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#757575',
+                },
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              featureType: 'administrative.country',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#9e9e9e',
+                },
+              ],
+            },
+            {
+              featureType: 'administrative.locality',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#bdbdbd',
+                },
+              ],
+            },
+            {
+              featureType: 'poi',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#757575',
+                },
+              ],
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#181818',
+                },
+              ],
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry.fill',
+              stylers: [
+                {
+                  color: '#093b07',
+                },
+                {
+                  visibility: 'on',
+                },
+              ],
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#616161',
+                },
+              ],
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.stroke',
+              stylers: [
+                {
+                  color: '#1b1b1b',
+                },
+              ],
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry.fill',
+              stylers: [
+                {
+                  color: '#4a4a4a',
+                },
+              ],
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels.icon',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#8a8a8a',
+                },
+              ],
+            },
+            {
+              featureType: 'road.arterial',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#373737',
+                },
+              ],
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#3c3c3c',
+                },
+              ],
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry.fill',
+              stylers: [
+                {
+                  color: '#b60b08',
+                },
+              ],
+            },
+            {
+              featureType: 'road.highway.controlled_access',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#4e4e4e',
+                },
+              ],
+            },
+            {
+              featureType: 'road.highway.controlled_access',
+              elementType: 'geometry.fill',
+              stylers: [
+                {
+                  color: '#ff0000',
+                },
+              ],
+            },
+            {
+              featureType: 'road.local',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#616161',
+                },
+              ],
+            },
+            {
+              featureType: 'transit',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              featureType: 'transit',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#757575',
+                },
+              ],
+            },
+            {
+              featureType: 'transit.line',
+              elementType: 'geometry.fill',
+              stylers: [
+                {
+                  color: '#4c8076',
+                },
+              ],
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#000000',
+                },
+              ],
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry.fill',
+              stylers: [
+                {
+                  color: '#095f8d',
+                },
+              ],
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.fill',
+              stylers: [
+                {
+                  color: '#3d3d3d',
+                },
+              ],
+            },
+          ],
         }}
         data-test-id="googlemap"
         defaultCenter={{ lat: 53.572573, lng: 9.982965 }}
@@ -253,9 +542,11 @@ export default class MapScreen extends Component {
               </StyledDistance>
               <DirectionsRenderer
                 directions={props.directions}
-                options={{
-                  draggable: true,
-                }}
+                options={
+                  {
+                    // draggable: true,
+                  }
+                }
               />
               <DirectionsRenderer
                 directions={props.directions}
@@ -272,6 +563,18 @@ export default class MapScreen extends Component {
 
   render() {
     const MapWithADirectionsRenderer = this.getMap()
-    return <MapWithADirectionsRenderer />
+    return (
+      <React.Fragment>
+        <StyledApp>
+          <StyledHeader>Add Route</StyledHeader>
+          <StyledWrapper>
+            <StyledMapWrapper>
+              <MapWithADirectionsRenderer />
+            </StyledMapWrapper>
+          </StyledWrapper>
+          <Navbar navHeight={'10%'} />
+        </StyledApp>
+      </React.Fragment>
+    )
   }
 }

@@ -10,6 +10,8 @@ const initialState = {
   directions: null,
   distance: null,
   tripName: null,
+  polyline: null,
+  firstRun: true,
   rating: {
     road: { easy: true, medium: false, hard: false },
     crowd: { easy: true, medium: false, hard: false },
@@ -116,12 +118,6 @@ export default function(state = initialState, action = {}) {
           gradientmed +
           gradienthard) /
         4
-      console.log(action.payload)
-      console.log(state.directions)
-      const path = state.directions.routes[0].overview_path.map(path => {
-        return [...path, { lat: path.lat(), lng: path.lng() }]
-      })
-      console.log(path)
       return {
         ...state,
         trips: [
@@ -133,7 +129,7 @@ export default function(state = initialState, action = {}) {
             totalRating: result,
             distance: state.distance,
             directions: state.directions,
-            polyline: path,
+            polyline: state.polyline,
           },
         ],
         waypoints: [],
@@ -142,6 +138,7 @@ export default function(state = initialState, action = {}) {
         distance: null,
         StartBool: true,
         addWaypoints: false,
+        polyline: null,
         hint: 'Place your Starting Point',
         rating: {
           road: { easy: true, medium: false, hard: false },
@@ -195,7 +192,8 @@ export default function(state = initialState, action = {}) {
           },
           0
         )
-        const result = distance / 1000 + ' Km'
+        const result = Number(distance / 1000).toFixed(1) + ' km'
+        result.replace('.', ',')
         return {
           ...state,
           distance: result,
@@ -211,10 +209,26 @@ export default function(state = initialState, action = {}) {
       }
 
     case ACTIONS.SAVE_DIRECTIONS:
+      const path = action.payload.directions.routes[0].overview_path.map(
+        path => {
+          return { lat: path.lat(), lng: path.lng() }
+        }
+      )
       return {
         ...state,
         directions: action.payload.directions,
+        polyline: path,
       }
+
+    case ACTIONS.REPLACE_TRIPS:
+      return {
+        ...state,
+        trips: action.payload.trips,
+        firstRun: false,
+      }
+
+    case ACTIONS.TRIP_CREATED:
+      return state
 
     default:
       return state

@@ -26,7 +26,7 @@ const StyledBorder = styled.div`
   height: 1px;
   padding: 0;
   margin: 0;
-  background: #4a90e2;
+  background: #94d82d;
   transition: 0.2s all ease-out;
 `
 
@@ -57,7 +57,6 @@ export default class Input extends Component {
           }}
           type="text"
           placeholder={this.props.placeholder}
-          
         />
         <StyledBorder borderWidth={this.state.borderWidth} />
       </StyledContainer>

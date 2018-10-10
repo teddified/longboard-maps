@@ -5,7 +5,7 @@ const StyledBoxActive = styled.div`
   height: 30px;
   width: 80px;
   color: white;
-  background: #4a90e2;
+  background: #94d82d;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,9 +15,9 @@ const StyledBoxActive = styled.div`
 const StyledBoxNotActive = styled.div`
   height: 30px;
   width: 80px;
-  color: #4a90e2;
+  color: #94d82d;
   background: white;
-  border: 1px solid #4a90e2;
+  border: 1px solid #94d82d;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,7 +25,7 @@ const StyledBoxNotActive = styled.div`
 
   &:hover {
     color: white;
-    background: #4a90e2;
+    background: #94d82d;
     border: none;
   }
 `

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
 import OverviewScreen from '../screens/OverviewScreen'
-import {} from '../actions'
+import { fetchTrips } from '../actions'
 
 const mapStateToProps = state => ({
   state: state,
 })
 
 const mapDispatchToProps = dispatch => ({
-  // deletePlayer: index => dispatch(deletePlayer({ index })),
+  fetchTrips: () => dispatch(fetchTrips()),
 })
 
 export default connect(
