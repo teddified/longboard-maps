@@ -61,6 +61,7 @@ export default class OverviewScreen extends Component {
   }
 
   render() {
+    console.log(this.props.state)
     return (
       <React.Fragment>
         <StyledApp>

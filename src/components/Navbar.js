@@ -45,7 +45,6 @@ const StyledLinkDisabled = styled.div`
 export default class Navbar extends Component {
   render() {
     const path = window.location.pathname
-    console.log(path)
     switch (path) {
       case '/routeCollection':
         return (

@@ -11,7 +11,7 @@ describe('MapScreen', () => {
   it('check all elements on Map', () => {
     cy.get('[data-test-id="addwaypoints"]').should('not.exist')
     cy.get('[data-test-id="savetrip"]').should('exist')
-    cy.get('[data-test-id="distancelabel"]').should('exist')
+    // cy.get('[data-test-id="distancelabel"]').should('exist')
     cy.get('[data-test-id="addwaypoints"]')
       .parent()
       .should('exist')

@@ -1,5 +1,7 @@
 export function getTrips() {
-  return fetch('http://localhost:3001/trip').then(res => res.json())
+  return fetch('http://localhost:3001/trips', {
+    method: 'GET',
+    }).then(res => res.json())
 }
 
 export function createTrip(trip) {
@@ -7,7 +9,7 @@ export function createTrip(trip) {
   delete trip.trips.StartBool
   delete trip.trips.hint
   delete trip.trips.addWaypoints
-  return fetch('http://localhost:3001/trip/new', {
+  return fetch('http://localhost:3001/trips/new', {
     method: 'POST',
     body: JSON.stringify(trip.trips),
     headers: {

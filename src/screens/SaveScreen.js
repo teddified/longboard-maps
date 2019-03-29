@@ -93,7 +93,6 @@ export default class SaveScreen extends Component {
   pushTotalRating() {
     const { state } = this.props
     this.newState = state
-    console.log(this.newState)
 
     const roadeasy = state.rating.road.easy ? 1 : 0
     const roadmed = state.rating.road.medium ? 2 : 0
